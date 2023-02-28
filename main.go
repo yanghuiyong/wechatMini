@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"flag"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -141,6 +142,7 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+		fmt.Println("read:", message)
 		c.hub.broadcast <- message
 	}
 }
@@ -170,6 +172,7 @@ func (c *Client) writePump() {
 			if err != nil {
 				return
 			}
+			fmt.Println(message)
 			w.Write(message)
 
 			// Add queued chat messages to the current websocket message.
